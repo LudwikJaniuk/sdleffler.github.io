@@ -6,7 +6,7 @@
   -webkit-box-shadow: 3px 3px rgba(0,0,0,0.1);
   box-shadow: 3px 3px rgba(0,0,0,0.1);
   margin: 20px 0 20px 0;
-  overflow: scroll;
+  overflow: auto;
 }
 
 code {
@@ -14,10 +14,10 @@ code {
 }
 
 pre.highlight,
-.highlight pre { background-color: #272822; }
+.highlight pre { background-color: #272822; color: #F1F2F3 }
 .highlight .hll { background-color: #22282A }
 .highlight .c { color: #99AA8A } /* Comment */
-.highlight .err { color: #960050; background-color: #1e0010 } /* Error */
+.highlight .err { color: #960050 } /* Error */
 .highlight .k { color: #93C763 } /* Keyword */
 .highlight .l { color: #ae81ff } /* Literal */
 .highlight .n { color: #F1F2F3 } /* Name */
