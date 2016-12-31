@@ -6,7 +6,7 @@
 name: Christopher Breeden
 
 # Short bio or description (displayed in the header)
-description: impl From<Words> for Blog
+description: impl From&lt;Words&gt; for Blog
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: https://avatars1.githubusercontent.com/u/12069845?v=3&u=ad4f5c74db51572811382cc4254b2784942f60bb&s=400
