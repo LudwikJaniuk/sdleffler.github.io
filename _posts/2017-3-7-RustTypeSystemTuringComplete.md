@@ -902,8 +902,18 @@ your program and it won't compile no matter what. Only if you're *really* muckin
 with the type system -- like, say, writing seriously large Smallfuck programs with
 it -- then maybe you'll hit the recursion limit.
 
-Rust's type system is Turing-complete. Maybe this'll resolve some highly speculative
-discussions between anyone looking to talk about extensions to Rust's type system --
-but if you're just writing Rust, it's just a curiosity. Not much more. But pretty cool, no?
+If you're pushing the limits and trying to do things like encode integers or other
+information as types in Rust -- like [`typenum`](https://crates.io/crates/typenum),
+[`peano`](https://crates.io/crates/peano),
+[`type-level-logic`](https://crates.io/crates/type-level-logic) -- then it's
+still a bit interesting, because it means that if you screw up, then you could
+end up causing infinite loops in the typechecker. Since Peano arithmetic is
+undecidable, you have to have a Turing-complete type system if you really want to
+abuse the type system in such a way that you can even begin to reason about it.
+
+For further reading on Turing-completeness, I suggest looking at the Glasgow
+Haskell Compiler's manual, specifically about extensions to typeclasses such
+as `-XUndecidableInstances`. Wikipedia also has a lot of fairly extensive material
+on the subjects of computability theory and logics.
 
 One last time: the full source code of this project is available here, on GitHub. [https://github.com/sdleffler/tarpit-rs](https://github.com/sdleffler/tarpit-rs)
