@@ -905,3 +905,5 @@ it -- then maybe you'll hit the recursion limit.
 Rust's type system is Turing-complete. Maybe this'll resolve some highly speculative
 discussions between anyone looking to talk about extensions to Rust's type system --
 but if you're just writing Rust, it's just a curiosity. Not much more. But pretty cool, no?
+
+One last time: the full source code of this project is available here, on GitHub. https://github.com/sdleffler/tarpit-rs
