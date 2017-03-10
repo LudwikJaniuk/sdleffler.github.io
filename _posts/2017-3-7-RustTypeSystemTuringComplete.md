@@ -224,8 +224,8 @@ This is some fairly standard bit manipulation. We store 8 bits into one cell in
 our `bits` array, so to find out which cell a given bit goes to, we use
 truncating division by 8, which if we're trying to be exceedingly clever results
 in a bit-shift to the right by three places. We're essentially using this addressing
-scheme, where the first three bits of the `u16` pointer indicate the bit of the
-byte in `bits`, and the last 13 bits indicate the index of the byte in `bits`:
+scheme, where the lower three bits of the `u16` pointer indicate the bit of the
+byte in `bits`, and the higher 13 bits indicate the index of the byte in `bits`:
 
 ```
 Index into the bytes of `bits` --> 1100011010011 \ 001 <-- Which bit in the byte
