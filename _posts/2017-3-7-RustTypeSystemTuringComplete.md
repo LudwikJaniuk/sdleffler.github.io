@@ -893,7 +893,7 @@ if anyone would like to contribute more tests, [I would welcome any pull request
 
 So, Rust's type system is Turing-complete. What does this mean?
 
-Pretty much nothing. Honestly, it means pretty much nothing. Sure, the type system
+Honestly, it means pretty much nothing. Sure, the type system
 can get into infinite loops, but we already have a recursion limit in the type checker
 so that's nearly irrelevant. Sure, we can write things like Smallfuck in the type
 system. Okay, that last one's kinda cool.
