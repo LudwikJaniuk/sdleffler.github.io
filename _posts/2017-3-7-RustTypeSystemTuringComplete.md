@@ -773,7 +773,7 @@ impl Running<St<Nil, F, R2>> for Left<P2>
 }
 ```
 
-And so the "output type" of the "computation" is `<P as Running<St<Nil, F, Cons<F, R2>>>>::Output`.
+And so the "output type" of the "computation" is `<P2 as Running<St<Nil, F, Cons<F, R2>>>>::Output`.
 
 Now that we've got that under our belts, let's look at the handling for the
 `Flip` instruction in `Running`:
