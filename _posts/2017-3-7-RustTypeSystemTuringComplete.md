@@ -535,8 +535,8 @@ concrete List => BitVec {
 
 Now... we have some complexity. Let's dig through this slowly.
 
-This is a type-level cons-list. The first things we get out of this is two struct
-types, `Nil` and `Cons`:
+This is a type-level cons-list. The first thing we get out of this is a pair of
+struct types, `Nil` and `Cons`:
 
 ```rust
 pub struct Nil;
