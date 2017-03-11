@@ -46,7 +46,7 @@ any universal Turing machine in it -- by simulating it in the embedded language.
 
 So, what's [Smallfuck](https://esolangs.org/wiki/Smallfuck)? Smallfuck is a
 minimalist programming language which is known to be Turing-complete when memory
-restrictions are lifted. I chose to implement it in the Rust type system over
+restrictions are lifted. I chose it to implement in the Rust type system over
 other Turing-complete languages because of its simplicity. While [esoteric languages](https://esolangs.org/wiki/Main_Page)
 are fairly useless for actually writing programs, they're great for proving
 Turing-completeness.
