@@ -4,7 +4,7 @@ title: Rust's Type System is Turing-Complete
 published: true
 ---
 
-_(N.B. The world "fuck" appears multiple times in this post. I recommend that
+_(N.B. The word "fuck" appears multiple times in this post. I recommend that
 the reader temporarily not consider "fuck" as profanity, as it isn't used that
 way here.)_
 
