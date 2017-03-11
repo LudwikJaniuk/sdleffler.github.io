@@ -13,3 +13,7 @@ Email: [sean@errno.com](mailto:sean@errno.com)
 Twitter: [@sdleffy](https://www.twitter.com/sdleffy)
 
 GitHub: [sdleffler](https://github.com/sdleffler)
+
+Reddit: [/u/sdleffy](https://www.reddit.com/u/sdleffy/)
+
+I am `sleffy` on the Rust IRC. (`#rust` on Moznet)
