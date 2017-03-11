@@ -662,7 +662,7 @@ pub type Run<P: ProgramTy, S: StateTy> = <P as Running<S>>::Output;
 So, `(Run) Running(ProgramTy, StateTy): StateTy` becomes a sort of type-level
 function from two types implementing `ProgramTy` and `StateTy` respectively and
 ouputting one type which implements `StateTy`. Now for the stuff inside. Let's
-take a look at once simple definition:
+take a look at one simple definition:
 
 ```rust
 forall (P: ProgramTy, C: Bit, R: List) {
