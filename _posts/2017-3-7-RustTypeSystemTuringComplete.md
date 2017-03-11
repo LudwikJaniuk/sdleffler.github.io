@@ -768,8 +768,8 @@ into the body of the impl. We end up with this:
 
 ```rust
 impl Running<St<Nil, F, R2>> for Left<P2>
-    where P: Running<St<Nil, F, Cons<F, R2>>> {
-    type Output = <P as Running<St<Nil, F, Cons<F, R2>>>>::Output;
+    where P2: Running<St<Nil, F, Cons<F, R2>>> {
+    type Output = <P2 as Running<St<Nil, F, Cons<F, R2>>>>::Output;
 }
 ```
 
