@@ -365,7 +365,7 @@ process for solving equations between types. If there is no solution, we say tha
 unification has failed. Here's an example:
 
 ```rust
-trait Foo<B>: A {
+trait Foo<B> {
    type Associated;
 }
 
