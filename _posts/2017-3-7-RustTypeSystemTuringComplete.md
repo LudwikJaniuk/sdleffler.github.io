@@ -306,7 +306,7 @@ Loop(ref body_and_next) => {
 ```
 
 We have to do the double-deref on `body_and_next` because we boxed the tuple. We
-avoid moving out of the tuple by binding by `ref`. Our finished `.big_step()`
+avoid moving out of the box by binding by `ref`. Our finished `.big_step()`
 function looks like this:
 
 ```rust
