@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Rust's Type System is Turing Complete
+title: Rust's Type System is Turing-Complete
 published: true
 ---
 
