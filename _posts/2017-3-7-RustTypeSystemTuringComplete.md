@@ -207,7 +207,7 @@ interpreter:
 ```rust
 impl State {
     fn get_bit(&self, at: u16) -> bool {
-        self.bits[(at / 8) as usize] & (0x1 << (at & 0x7)) != 0
+        self.bits[(at >> 3) as usize] & (0x1 << (at & 0x7)) != 0
     }
 
     fn get_current_bit(&self) -> bool {
@@ -215,7 +215,7 @@ impl State {
     }
 
     fn flip_current_bit(&mut self) {
-        self.bits[(self.ptr / 8) as usize] ^= 0x1 << (self.ptr & 0x7);
+        self.bits[(self.ptr >> 3) as usize] ^= 0x1 << (self.ptr & 0x7);
     }
 }
 ```
