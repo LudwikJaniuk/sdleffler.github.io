@@ -16,4 +16,4 @@ GitHub: [sdleffler](https://github.com/sdleffler)
 
 Reddit: [/u/sdleffy](https://www.reddit.com/u/sdleffy/)
 
-I am `sleffy` on the Rust IRC. (`#rust` and other channels on Moznet and various Freenode channels.)
+I am `sleffy` on IRC. I can be found in `#rust` and related channels on MozNet and `#esoteric` and other channels on Freenode.
