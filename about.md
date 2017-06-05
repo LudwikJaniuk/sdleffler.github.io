@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-Hello! I'm a student programmer violinist local to Berkeley, California. I am a student at Berkeley City College. If you'd like to stop by and chat about Rust, programming, type theory (be warned -- I don't know much!) or anything else, feel free to contact me.
+Hello! I'm a student programmer and violinist local to Berkeley, California. I currently study at Berkeley City College. If you'd like to stop by and chat about Rust, programming, types or anything else, feel free to contact me.
 
 ### Contact me
 
