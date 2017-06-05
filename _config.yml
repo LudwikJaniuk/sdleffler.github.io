@@ -3,10 +3,10 @@
 #
 
 # Name of your site (displayed in the header)
-name: Sean Leffler
+name: Recursive Descent into Madness
 
 # Short bio or description (displayed in the header)
-description: It's a Blog
+description: A countable set of sanities and insanities, by Sean Leffler.
 
 # # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: https://avatars0.githubusercontent.com/u/5241142?v=3&s=460
@@ -23,9 +23,9 @@ footer-links:
   flickr:
   github: sdleffler
   instagram:
-  linkedin:
+  linkedin: sean-leffler-71561213a
   pinterest:
-  rss: # just type anything here for a working RSS icon
+  rss: givemeaworkingrssicon # just type anything here for a working RSS icon
   twitter: sdleffy
   stackoverflow: # your stackoverflow profile, e.g. "users/50476/bart-kiers"
   youtube: # channel/<your_long_string> or user/<user-name>
