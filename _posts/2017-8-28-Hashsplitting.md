@@ -1,19 +1,21 @@
 ---
 layout: post
-title: Deterministic Chunking Through Hashsplitting for the Attaca DVCS
+title: Large Files, Version Control, and Hashsplitting
 published: false
 ---
 
-I'm currently working on [Attaca](https://github.com/sdleffler/attaca), a
-distributed, resilient version control system for extremely large files and
+I'm currently working on [Attaca](https://github.com/sdleffler/attaca), a fast,
+distributed, and resilient version control system for extremely large files and
 repositories, targeted at scientists working with very large amounts of data.
-There are a few key components to this design; the first is the git data
-structure, with one special modification. The second is a distributed hashtable
-which is used to store the objects of the graph data structure, and the third
-is a technique called "hashsplitting" or "hash chunking".  Resilience is
-handled by the distributed object storage system, and version control itself by
-the git-like data structure; however, in this blog post, I'll be talking about
-the third technique, which is surprisingly simple but is theoretically capable of significant performance gains: hashsplitting.
+(Warning: not currently in any sort of working condition as of 8/29/17!) There
+are a few key components to this design; the first is the git data structure,
+with one special modification. The second is a distributed hashtable which is
+used to store the objects of the graph data structure, and the third is a
+technique called "hashsplitting" or "hash chunking".  Resilience is handled by
+the distributed object storage system, and version control itself by the
+git-like data structure. In this blog post, I'll be talking about the third
+component: hashsplitting. Hashsplitting is a surprisingly simple technique
+which is capable of significant performance gains under the right conditions.
 
 ## A little background: the git data structure, our modification and "blobs"
 
@@ -22,7 +24,7 @@ node types:
 
 1. Blob nodes store raw data. We have one blob per version of a file throughout
    the history of a repository.
-2. Subtree nodes represent directory structure, and map names to pointers to
+2. Subtree nodes represent directory structure, and map names to hashes of
    child nodes.
 3. Commit nodes store commit information, and denote a state of the git
    repository that someone can `git checkout` and work with. As such they point
@@ -40,6 +42,7 @@ enum Object {
         author: String,
         date: DateTime,
         root: ObjectHash, // Points to a subtree.
+        ...
     }
 }
 ```
@@ -49,19 +52,17 @@ And we can imagine the object store as a `HashMap<ObjectHash, Object>`, where
 Git, SHA-1 is used.)
 
 Essentially, a subtree node in a git repository actually points to a copy of
-the entire directory structure it represents; if a given child node of a
-subtree in a repository does not change between commits, then both commits can
-point to the same object - no need to make multiple copies.  This is because
-git's graph data structure is backed by a content-addressed storage system:
-essentially an associative map from the hash of an object/node in the graph
-data structure to the object/node itself. As a Rust type: `HashMap<ObjectHash,
-Object>`, and `ObjectHash` then serves as the "pointer" used to implement the
-graph data structure. This means that any attempt to store the same node twice
-automatically points to the same data, saving potentially massive amounts of
-space for a negligible cost.
+the entire directory structure it represents. The important part about this
+structure, though, is how two different commits can *share* various parts of
+their subtrees. Suppose we modify a single file in a directory containing
+several files. Then, that file's hash changes; when we create a new subtree
+representing that directory and its files, we use the new hash for the modified
+file, but the unchanged files all have the same hashes from before and are thus
+already stored in the Git object store. When we commit this change, only the
+new file, subtree, and commit need to be stored anew.
 
-For more information on the git data structure, see [this
-article](https://blog.jayway.com/2013/03/03/git-is-a-purely-functional-data-structure/).
+(For more information on the git data structure, see [this
+article](https://blog.jayway.com/2013/03/03/git-is-a-purely-functional-data-structure/).)
 
 Our modification to the git data structure is to add an additional node type -
 the "multi-blob file". A multi-blob file is similar to a subtree, except that
@@ -78,6 +79,9 @@ enum Object {
     LargeBlob(Vec<(u64, ObjectHash)>), // Where hashes point to large blobs or small blobs.
     Subtree(HashMap<String, ObjectHash>), // Where hashes point to large blobs or small blobs.
     Commit {
+        author: String,
+        date: DateTime,
+        root: ObjectHash, // Points to a subtree.
         ...
     }
 }
@@ -95,22 +99,20 @@ small blob, and we build a tree of large blobs with small blob leaves to
 represent the large file.  We might visualize this file as a list of chunks
 like so:
 
-![Interval chunking]({{ site.url }}/images/Hashsplitting/Hashsplitting1.png)
+![Interval chunking]({{ site.baseurl }}/images/Hashsplitting/Hashsplitting1.png)
 
 Now if we modify a chunk in the middle, only the modified chunk(s) need to be
 stored; the other chunks can simply point to the data of the old chunks:
 
-![Interval chunking after change]({{ site.url }}/images/Hashsplitting/Hashsplitting2.png)
+![Interval chunking after change]({{ site.baseurl }}/images/Hashsplitting/Hashsplitting2.png)
 
 But suppose we shift an interval of the file a number of bytes closer to the
 beginning or end of the file, or perhaps copy a large earlier segment of the
 file to a later offset.  What happens to the interval chunking scheme?
 
-![Interval chunking after shift]({{ site.url }}/images/Hashsplitting/Hashsplitting3.ong)
+![Interval chunking after shift]({{ site.baseurl }}/images/Hashsplitting/Hashsplitting3.png)
 
-Due to the way that we chunk at regular intervals, even when the data inside a
-given interval is identical to another interval of data in the same file, the
-chunks will have different hashes and contents!
+While the data stays the same, all chunks after the shift change because the splitting of the file doesn't depend on the data being split, which means that all chunks after the shift need to be updated instead of just the range of changed data. Even though both files share a very large range of data, due to the chunking scheme, we still have to treat chunks within this range as different.
 
 ## Chunking large files: deterministic splitting based on chunk contents
 
@@ -124,7 +126,11 @@ many bytes have been processed, total; however, with hashsplitting, the chunk
 location depends strictly on a window of previous bytes, meaning that inserting
 or removing bytes which are not part of the window causing the split - and
 which do not cause a new valid window for a split - will not change the split
-location.  With hashsplitting, if a chunk in a file is shortened or lengthened,
+location.
+
+![Hashsplitting]({{ site.baseurl }}/images/Hashsplitting/Hashsplitting4.png)
+
+With hashsplitting, if a chunk in a file is shortened or lengthened,
 chunks other than the modified chunk will only change if a split marker is
 overwritten.  This means that in the case of a repository with large amounts of
 similar data, the offsets at which these similar chunks occur will not change
@@ -148,7 +154,7 @@ chunks you want.
 ## Hashsplitting and Attaca
 
 Attaca's design uses hashsplitting for one especially specific reason: Attaca
-is designed to deal with *extremely large files*, on the order of gigabytes per
+is designed to deal with *extremely* large files, on the order of gigabytes per
 file.  The design goals of Attaca are to be able to handle repositories of up
 to a petabyte in size and individual commits in the range of terabytes; as
 such, any problems with interval chunking are magnified due to the sheer size
