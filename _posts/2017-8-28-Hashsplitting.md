@@ -6,26 +6,31 @@ published: false
 
 I'm currently working on [Attaca](https://github.com/sdleffler/attaca), a fast,
 distributed, and resilient version control system for extremely large files and
-repositories, targeted at scientists working with very large amounts of data.
+repositories, designed for scientists working on projects containing terabytes or petabytes of data.
 (Warning: not currently in any sort of working condition as of 8/29/17!) There
 are a few key components to this design; the first is the git data structure,
-with one special modification. The second is a distributed hashtable which is
+with one special modification. The second is a distributed hash table (DHT) which is
 used to store the objects of the graph data structure, and the third is a
 technique called "hashsplitting" or "hash chunking".  Resilience is handled by
 the distributed object storage system, and version control itself by the
-git-like data structure. In this blog post, I'll be talking about the third
-component: hashsplitting. Hashsplitting is a surprisingly simple technique
+git-like data structure.
+
+The reason for borrowing the design from Git is that, because objects are addressed by hash, they can be stored in any DHT, and only refs must be stored in a distributed consensus data store. 
+
+In this blog post, I'll be talking about the third
+component: hashsplitting. Hashsplitting, a concept 
+[borrowed from the bup backup utility](https://github.com/bup/bup/blob/master/DESIGN), is a surprisingly simple technique
 which is capable of significant performance gains under the right conditions.
 
 ## A little background: the git data structure, our modification and "blobs"
 
 The basic git data structure consists of a directed acyclic graph with three
-node types:
+node types, called "objects" in the Git documentation.
 
 1. Blob nodes store raw data. We have one blob per version of a file throughout
    the history of a repository.
 2. Subtree nodes represent directory structure, and map names to hashes of
-   child nodes.
+   child nodes. Child nodes of subtrees may be blobs or other subtrees.
 3. Commit nodes store commit information, and denote a state of the git
    repository that someone can `git checkout` and work with. As such they point
    to a number of parent commits as well as the base subtree of the current
