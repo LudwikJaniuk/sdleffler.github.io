@@ -74,7 +74,37 @@ Liquid Haskell is even capable of reasoning about the equality of Haskell types
 by using "measures": Haskell functions lifted into the predicate logic used in
 refinement types. In fact, the `head` function from before can be
 straightforwardly lifted to a measure simply by adding the `{-@ measure head
-@-}` annotation.
+@-}` annotation. "Lifting" a measure means adding annotations to the list
+constructors; for example, lifting `head` would produce something like so:
+
+```haskell
+data [a] where
+  []     :: [a]
+  (x:xs) :: x:a -> xs:[a] -> {ys:[a] | head ys = x}
+```
+
+Now suppose we define `len` as a measure:
+
+```haskell
+{-@ measure len @-}
+len :: [a] -> Int
+len []     = 0
+len (x:xs) = 1 + len xs
+```
+
+This would get lifted into the following annotations on the constructors of `[a]`:
+
+```haskell
+data [a] where
+  []     :: {xs:[a] | len xs = 0}
+  (x:xs) :: x:a -> xs:[a] -> {ys:[a] | len ys = len xs + 1}
+```
+
+Lifting multiple measures means adding more and more properties to the
+constructors of a given type. Essentially, Liquid Haskell starts out not
+knowing what `len []` really means, but we provide it meaning by giving Liquid
+various equalities denoting the properties of `len xs` - and the same for
+`head`.
 
 ## How does it work?
 
@@ -86,17 +116,17 @@ at the second case first, the nil case:
 map _ [] = []
 ```
 
-Our refined type for `map` is `(a -> b) -> xs:[a] -> {ys:[a] | len xs == len
-ys}`. In this case, `xs` is `[]` and `ys` is `[]`. A single constraint needs to
-be satisfied: `len xs == len ys`. Liquid Haskell knows that `len xs == 0`
-because `len [] == 0`, by definition, and the same with `len ys`; thus, the
+Our refined type for `map` is `(a -> b) -> vs:[a] -> {ws:[a] | len xs == len
+ys}`. In this case, `vs` is `[]` and `ws` is `[]`. A single constraint needs to
+be satisfied: `len vs == len ws`. Liquid Haskell knows that `len vs == 0`
+because `len [] == 0`, by definition, and the same with `len ws`; thus, the
 constraint is satisfied. On to the cons case:
 
 ```haskell
 map f (x:xs) = f x : map f xs
 ```
 
-Now, `xs = x:xs` and `ys = f x : map f xs`. Liquid Haskell knows the refined
+Now, `vs = x:xs` and `ws = f x : map f xs`. Liquid Haskell knows the refined
 type of `(:)`, which goes something like
 
 ```haskell
