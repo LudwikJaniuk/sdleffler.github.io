@@ -1,26 +1,29 @@
 ---
 layout: post
 title: Large Files, Version Control, and Hashsplitting
-published: false
+published: true
 ---
 
 I'm currently working on [Attaca](https://github.com/sdleffler/attaca), a fast,
 distributed, and resilient version control system for extremely large files and
-repositories, designed for scientists working on projects containing terabytes or petabytes of data.
-(Warning: not currently in any sort of working condition as of 8/29/17!) There
-are a few key components to this design; the first is the git data structure,
-with one special modification. The second is a distributed hash table (DHT) which is
-used to store the objects of the graph data structure, and the third is a
-technique called "hashsplitting" or "hash chunking".  Resilience is handled by
-the distributed object storage system, and version control itself by the
-git-like data structure.
+repositories, designed for scientists working on projects containing terabytes
+or petabytes of data.  (Warning: not currently in any sort of working condition
+as of 8/29/17!) There are a few key components to this design; the first is the
+git data structure, with one special modification. The second is a distributed
+hash table (DHT) which is used to store the objects of the graph data
+structure, and the third is a technique called "hashsplitting" or "hash
+chunking".  Resilience is handled by the distributed object storage system, and
+version control itself by the git-like data structure.
 
-The reason for borrowing the design from Git is that, because objects are addressed by hash, they can be stored in any DHT, and only refs must be stored in a distributed consensus data store. 
+The reason for borrowing the design from Git is that, because objects are
+addressed by hash, they can be stored in any DHT, and only refs must be stored
+in a distributed consensus data store. 
 
-In this blog post, I'll be talking about the third
-component: hashsplitting. Hashsplitting, a concept 
-[borrowed from the bup backup utility](https://github.com/bup/bup/blob/master/DESIGN), is a surprisingly simple technique
-which is capable of significant performance gains under the right conditions.
+In this blog post, I'll be talking about the third component: hashsplitting.
+Hashsplitting, a concept [borrowed from the bup backup
+utility](https://github.com/bup/bup/blob/master/DESIGN), is a surprisingly
+simple technique which is capable of significant performance gains under the
+right conditions.
 
 ## A little background: the git data structure, our modification and "blobs"
 
@@ -117,7 +120,12 @@ file to a later offset.  What happens to the interval chunking scheme?
 
 ![Interval chunking after shift]({{ site.baseurl }}/images/Hashsplitting/Hashsplitting3.png)
 
-While the data stays the same, all chunks after the shift change because the splitting of the file doesn't depend on the data being split, which means that all chunks after the shift need to be updated instead of just the range of changed data. Even though both files share a very large range of data, due to the chunking scheme, we still have to treat chunks within this range as different.
+While the data stays the same, all chunks after the shift change because the
+splitting of the file doesn't depend on the data being split, which means that
+all chunks after the shift need to be updated instead of just the range of
+changed data. Even though both files share a very large range of data, due to
+the chunking scheme, we still have to treat chunks within this range as
+different.
 
 ## Chunking large files: deterministic splitting based on chunk contents
 
