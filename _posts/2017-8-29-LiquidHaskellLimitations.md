@@ -1,23 +1,27 @@
 ---
 layout: post
-title: Limitations of Liquid Haskell and the Puzzle of `the`
+title: Strengths and Limitations of Liquid Haskell, and the Puzzle of `the`
 published: false
 ---
 
 This summer, I was lucky enough to be accepted to work with Liquid Haskell as
 part of the Summer of Haskell project! This blog post is an explanation of one
-of the more interesting puzzles involved in the project I participated in,
-which is the verification of Haskell's `base` libraries.
+of the more interesting puzzles involved, as well as what I learned of Liquid
+Haskell, its strengths, and its limitations.
 
 ## What's Liquid Haskell?
 
 Liquid Haskell is an external formal verification system for Haskell code. It
 consists of a program, `liquid`, which reads in specifications written as
 comments, generates a series of logical constraints, and then feeds the
-generated constraints to an SMT solver; if the SMT solver is able to determine
+generated constraints to an [SMT
+solver](https://en.wikipedia.org/wiki/Satisfiability_modulo_theories), a
+program capable of deciding whether or not the logical constraints are
+"satisfiable" and non-contradicting. If the SMT solver is able to determine
 that the constraints are satisfiable, then the program is "safe". Otherwise, a
 "liquid type error" has occurred, and the program may produce undesirable
-behavior when run.
+behavior when run. My Summer of Haskell project was to try to verify `base`,
+the standard libraries of Haskell.
 
 Liquid Haskell's type system is based around the idea of *refinement types*, a
 system for "refining" types in a source language - here, Haskell - with logical
