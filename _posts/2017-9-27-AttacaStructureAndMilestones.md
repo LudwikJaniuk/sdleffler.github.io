@@ -173,7 +173,8 @@ the whole crate.
 ### Sometimes, futures need to be `'static` and `Send`
 
 The `rados_aio_read` call turns out to be a bit tricky to create a future for.
-The obvious thing to do is to pass in an `&mut [u8]`, which we turn into a
+Since `rados_aio_read` asks for a pointer to a byte buffer and a buffer size,
+the obvious thing to do is to pass in an `&mut [u8]`, which we turn into a
 `*mut libc::c_char` to pass to RADOS and say, "hey, here's our buffer." This
 has problems, however, when we try to do things like use `futures_cpupool` to
 run our futures. What's the type signature of `CpuPool::spawn`?
@@ -210,7 +211,8 @@ possible reasons for it; a few of my guesses are:
   making dropping it potentially unsafe and capable of undefined behavior.
 
 Personally, I believe the last to be the most likely possibility. In any case
-the ramifications of this are that I need any future I want to run in a
+the ramifications of this are that while it's okay for futures running outside
+of a thread pool to be non-`'static`, I need any future I want to run in a
 separate thread to be `'static`; if my `ReadFuture` has a significant lifetime
 bound, everything falls apart. My solution was to pull out the
 [stable_deref_trait](https://github.com/storyyeller/stable_deref_trait)
@@ -219,9 +221,10 @@ dereference to an `&mut [u8]`; this allows `Vec<u8>` to be used interchangeably
 with fixed-size buffers such as `[u8; 4096]` and even mutable references to
 byte slices (`&'a mut [u8]`), the last of which introduces a lifetime to the
 `ReadFuture<B>` type. Doing this allows buffers passed in to have a lifetime -
-if necessary - or be `'static`, and in either case the buffer is returned as
+if necessary - *or* be `'static`, and in either case the buffer is returned as
 part of the future's result value: when a read is complete, you get ownership
-of your buffer back.
+of your buffer back, whether it was borrowed in the first place or temporarily
+owned by the future.
 
 ### A small but significant piece of inaccurate documentation
 
