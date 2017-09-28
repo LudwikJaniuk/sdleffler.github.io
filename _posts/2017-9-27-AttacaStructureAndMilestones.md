@@ -220,11 +220,12 @@ library, and allow the buffer passed in to be *any* type which can stably
 dereference to an `&mut [u8]`; this allows `Vec<u8>` to be used interchangeably
 with fixed-size buffers such as `[u8; 4096]` and even mutable references to
 byte slices (`&'a mut [u8]`), the last of which introduces a lifetime to the
-`ReadFuture<B>` type. Doing this allows buffers passed in to have a lifetime -
-if necessary - *or* be `'static`, and in either case the buffer is returned as
-part of the future's result value: when a read is complete, you get ownership
-of your buffer back, whether it was borrowed in the first place or temporarily
-owned by the future.
+`ReadFuture<B>` type. Doing this allows buffers passed in to have a lifetime if
+necessary, thus giving the future a non-`'static` lifetime, *or* be `'static`,
+in which case the future will also be `'static`.  In either case the buffer is
+returned as part of the future's result value: when a read is complete, you get
+ownership of your buffer back, whether it was borrowed in the first place or
+temporarily owned by the future.
 
 ### A small but significant piece of inaccurate documentation
 
