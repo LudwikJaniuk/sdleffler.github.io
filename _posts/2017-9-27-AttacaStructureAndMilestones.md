@@ -1,7 +1,7 @@
 ---
 layout: post
 title: The architecture of Attaca, milestones, and current progress
-published: true
+published: false
 ---
 
 In this post I want to talk a little about my current project,
