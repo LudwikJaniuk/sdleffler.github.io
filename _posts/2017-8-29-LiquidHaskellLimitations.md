@@ -208,22 +208,32 @@ filter :: forall <p :: a -> Bool, w :: a -> Bool -> Bool>.
 
 Let's break this down. The first thing to note is the odd universal
 quantification which starts the type; this is quantification *over refinement
-predicates.* We have two logical predicates we're quantifying over; the first
-predicates over values of type `a`, the type of the elements in the list we're
-filtering. Then, the second quantifies over the combination of a list element
-and a boolean. Let's try to decode what exactly these predicates are. The first
-thing to notice is where the `w` predicate is mentioned - in the type of the
-predicate function passed to filter:
+predicates.* The refinement predicate quantification has a curious notation,
+indicating something similar to Haskell's `forall` syntax but with some extra
+bells and whistles added on:
+
+```haskell
+forall <p :: a -> Bool, w :: a -> Bool -> Bool>.
+```
+
+This says that we have two logical predicates we're quantifying over; the
+first, `p`, predicates over values of type `a`, the type of the elements in the
+list we're filtering. Then, the second (`w`) quantifies over the combination of
+a list element and a boolean. Let's try to decode what exactly these predicates
+are. The first thing to notice is where the `w` predicate is mentioned - in the
+type of the predicate function passed to filter:
 
 ```haskell
 x:a -> Bool<w x>
 ```
 
-This type - given to the predicate passed into the Haskell filter - says that
-all booleans returned from the predicate will satisfy `w`, where `w` also knows
-about the argument to the predicate. Here, the notation `Bool<w x>` is
-equivalent to the notation `{v:Bool | w x v}`. So `w` somehow qualifies the
-output of the Haskell predicate; what about `p`?
+This type - given to the predicate passed into the Haskell filter - is a "pi
+type", or dependent function type. It says that the function takes a single
+argument of type `a`, names it `x` so it can be referred to in the type, and
+then stipulates that all booleans returned from the predicate will satisfy `w`,
+where `w` also knows about the argument to the predicate. Here, the notation
+`Bool<w x>` is equivalent to the notation `{v:Bool | w x v}`. So `w` somehow
+qualifies the output of the Haskell predicate; what about `p`?
 
 The first thing to note is that `p` shows up first of all (and arguably most
 importantly) in the return type of the refined `filter` type:
