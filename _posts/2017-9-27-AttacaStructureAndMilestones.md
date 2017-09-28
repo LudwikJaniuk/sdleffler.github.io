@@ -205,8 +205,8 @@ possible reasons for it; a few of my guesses are:
 
 Personally, I believe the last to be the most likely possibility. In any case
 the ramifications of this are that I need any future I want to run in a
-separate thread to be `'static`; if my `ReadFuture` has have a lifetime,
-everything falls apart. My solution was to pull out the
+separate thread to be `'static`; if my `ReadFuture` has a significant lifetime
+bound, everything falls apart. My solution was to pull out the
 [stable_deref_trait](https://github.com/storyyeller/stable_deref_trait)
 library, and allow the buffer passed in to be *any* type which can stably
 dereference to an `&mut [u8]`; this allows `Vec<u8>` to be used interchangeably
@@ -214,7 +214,7 @@ with fixed-size buffers such as `[u8; 4096]` and even mutable references to
 byte slices (`&'a mut [u8]`), the last of which introduces a lifetime to the
 `ReadFuture<B>` type. Doing this allows buffers passed in to have a lifetime -
 if necessary - or be `'static`, and in either case the buffer is returned as
-part of the future's result value; when a read is complete, you get ownership
+part of the future's result value: when a read is complete, you get ownership
 of your buffer back.
 
 ### A small but significant piece of inaccurate documentation
@@ -247,7 +247,8 @@ I went down a bit of a wild goose chase: I attempted, at first, to tune the
 adler32 rolling hash to my purposes. I attempted to use an overly clever "count
 the bits that match and see if the number of bits that match hit a threshold"
 condition. None of this worked - the overall distribution of chunk sizes that
-resulted were... discouraging.
+resulted was... discouraging. You'd get a smattering of too-small chunks and
+then several *very* large chunks.
 
 If you're going to hashsplit, adler32 might work for you - in fact, I suspect
 that if I went back and used it, it'd work fine (the main problem with it was
