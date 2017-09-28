@@ -343,12 +343,16 @@ not in reality) a *slice* of a file instead of cloning the entire file to disk.
 The reason for this would be to lazily load bits of a file through something
 like SAMBA or FUSE, allowing for users without terabytes upon terabytes of
 storage in their machines to work with a repository containing petabytes of
-data. Concretely, this means we have to load blobs from a remote store *while*
-constructing the multi-blob file tree structure. Eventually, I decided to put
-aside the exact design of how to do this for a later date; currently, I assume
-that all large blobs for a given file are in memory and that we have size
-information for all small blobs of consequence. This is enough to construct and
-push any large blob we want to a remote repository.
+data. Concretely, this means that if the user makes changes and commits them
+without the entirety of the multi-blob file in-memory on their local machine,
+then we have to load blobs from a remote store *while* constructing the
+multi-blob file tree structure - which is at odds with one of my design goals,
+which was to keep the process of marshalling blobs free of queries to remotes.
+Eventually, I decided to put aside the exact design of how to do this for a
+later date; currently, I assume that all large blobs for a given file are in
+memory and that we have size information for all small blobs of consequence.
+This is enough to construct and push any large blob we want to a remote
+repository.
 
 ## Conclusions to draw and current progress
 
