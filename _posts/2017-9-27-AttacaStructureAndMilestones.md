@@ -5,13 +5,14 @@ published: false
 ---
 
 In this post I want to talk a little about my current project,
-[Attaca](https://github.com/sdleffler/attaca). Attaca is a distributed version
-control system designed for users working with absurdly large quantities of
-data. For example, scientists: a brain scan will routinely result in a 50GB
-file. Or, video editors, who work with absurdly large quantities of data in the
-form of video and image data. Whatever your use case, Attaca is designed to
-efficiently handle repositories of up to a petabyte of data in a distributed
-storage cluster.
+[Attaca](https://github.com/sdleffler/attaca).
+
+Attaca is a distributed version control system designed for users working with
+absurdly large quantities of data. For example, scientists: a brain scan will
+routinely result in a 50GB file. Or, video editors, who work with absurdly
+large quantities of data in the form of video and image data. Whatever your use
+case, Attaca is designed to efficiently handle repositories of up to a petabyte
+of data in a distributed storage cluster.
 
 ## How?
 
@@ -39,13 +40,18 @@ When I started working on this project, three milestones were set, estimated at 
 Three months in, I can comfortably say I've completed my first milestone!
 Hashsplitting and "marshalling" (the process of constructing large blobs from
 small blobs) work, and the attaca client is capable of spitting the completed
-blobs into a Ceph cluster. What exactly did this entail, and why did it take so
-long!?
+blobs into a Ceph cluster.
+
+What exactly did this entail, and why did it take so long? There were several
+reasons: a lack of idiomatic Rust bindings for Ceph, my unfamiliarity with
+hashsplitting, rolling hashes, and hashes in general, and my unfamiliarity with
+the `futures` library. Additionally, there was a design problem I didn't expect
+when starting the project, and for which I still lack a perfect solution.
 
 ## Subproject: `rad-rs`, high-level bindings for librados
 
 When I first looked into using Ceph for this project, I thought, "great! A
-system which is much easier to deploy than other distributed hashtables, and
+system which is much easier to deploy than other distributed object stores and
 suits my use case perfectly", which in general is true. However, the Ceph
 bindings for Rust covered only the C library, and went no further in terms of
 idiomatic Rust. For the first roughly four weeks of this project, I worked on
