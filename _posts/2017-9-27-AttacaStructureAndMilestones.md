@@ -267,11 +267,11 @@ problem.
 It wasn't actually running concurrently. At all.
 
 And it took me a fairly significant amount of time to figure out exactly why.
-Here's a summary of my newbie mistakes with the futures crate. If you're
-familiar with futures and you've used it for concurrent programming before, you
-might as well skip this bit - or maybe read it and tell me what more I'm doing
-wrong, because I'd love to hear advice from someone more familiar with the
-library.
+Here's a summary of my newbie mistakes and various lessons learned with the
+futures crate. If you're familiar with futures and you've used it for
+concurrent programming before, you might as well skip this bit - or maybe read
+it and tell me what more I'm doing wrong, because I'd love to hear advice from
+someone more familiar with the library.
 
 ### Don't forget to buffer
 
