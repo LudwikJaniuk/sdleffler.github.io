@@ -223,7 +223,7 @@ After three months of work, I was hit with a particularly interesting surprise:
 there is an odd (and generally harmless) inaccuracy in the Ceph/librados docs.
 While `rados_completion_t`s in the C API have both "complete" and "safe"
 callbacks, indicating when a completion's operation is completely in memory in
-the RADOS cluster and completely written to disk (respecitvely), this
+the RADOS cluster and completely written to disk (respectively), this
 distinction has actually been removed from the underlying code. As such, both
 the "complete" and "safe" callbacks are called when the operation is finished
 and on-disk on the cluster - the "complete" callback in the latest versions of
