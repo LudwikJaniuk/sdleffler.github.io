@@ -267,21 +267,20 @@ problem.
 It wasn't actually running concurrently. At all.
 
 And it took me a fairly significant amount of time to figure out exactly why.
-Here's a summary of my newbie mistakes with the futures crate and its `Stream`,
-`sync::mpsc`, and `Future` traits. If you're familiar with futures and you've
-used it for concurrent programming before, you might as well skip this bit - or
-maybe read it and tell me what I'm doing wrong, because I'd love to hear advice
-from someone more familiar with the library.
+Here's a summary of my newbie mistakes with the futures crate. If you're
+familiar with futures and you've used it for concurrent programming before, you
+might as well skip this bit - or maybe read it and tell me what more I'm doing
+wrong, because I'd love to hear advice from someone more familiar with the
+library.
 
 ### Don't forget to buffer
 
 My first mistake was not using the `Stream::buffered` and
 `Stream::buffer_unordered` methods. *Nothing will actually run concurrently on
 top of a `Stream` unless you buffer futures or take them out before you run
-them; using `Stream::and_then` will essentially block the top of the `Stream`.*
-In my case, I was constructing a stream, using `Stream::and_then` to do some
-computation on top, and then using `Stream::for_each` to drive the stream to
-completion.
+them; using `Stream::and_then` will block the top of the `Stream`.* In my case,
+I was constructing a stream, using `Stream::and_then` to do some computation on
+top, and then using `Stream::for_each` to drive the stream to completion.
 
 The end result of this was that `for_each` would wait for the future at the top
 of the stream to complete. Then, it would poll the stream for the next future
@@ -309,6 +308,21 @@ library to give execution to an unblocked task - the consumer! I'm still
 looking for a way to cause consumption without the producer hitting a buffer
 limit, but at the moment, this is the only reason anything works concurrently
 in attaca.
+
+### `futures_await` is fantastic
+
+Writing with futures and using `Futures::and_then` all the time can get very
+verbose and difficult to read. I've started to take apart bits of my code and
+replace them with the `async_block!` macro from the
+[`futures-await`](https://github.com/alexcrichton/futures-await-rs) crate.
+Funnily enough, some of the futures code I wrote before was so gnarly that
+`rustfmt` was having trouble formatting it - but using the `await!` and
+`async_block!` macros, it came so close to regular Rust with `Result`-based
+error handling that it's not only readable but also formats nicely (although I
+have to remove the `async_block!` macro each time I run `rustfmt`, since
+`rustfmt` won't format macro calls.)
+
+Using `futures_await` will put you on nightly, but it's worth it.
 
 ## It's hard to make a tree when you don't have all the data
 
