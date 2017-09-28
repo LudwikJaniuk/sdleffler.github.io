@@ -314,7 +314,7 @@ in attaca.
 Writing with futures and using `Futures::and_then` all the time can get very
 verbose and difficult to read. I've started to take apart bits of my code and
 replace them with the `async_block!` macro from the
-[`futures-await`](https://github.com/alexcrichton/futures-await-rs) crate.
+[`futures-await`](https://github.com/alexcrichton/futures-await) crate.
 Funnily enough, some of the futures code I wrote before was so gnarly that
 `rustfmt` was having trouble formatting it - but using the `await!` and
 `async_block!` macros, it came so close to regular Rust with `Result`-based
