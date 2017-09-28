@@ -9,24 +9,22 @@ In this post I want to talk a little about my current project,
 
 Attaca is a distributed version control system designed for users working with
 absurdly large quantities of data. For example, scientists: a brain scan will
-routinely result in a 50GB file. Or, video editors, who work with absurdly
-large quantities of data in the form of video and image data. Whatever your use
-case, Attaca is designed to efficiently handle repositories of up to a petabyte
-of data in a distributed storage cluster.
+routinely result in a 50GB file. Whatever your use case, Attaca is designed to
+efficiently handle repositories of up to a petabyte of data in a distributed
+storage cluster.
 
 ## How?
 
 Attaca is based around three main concepts/technologies: hashsplitting, the Git
-data structure, and distributed storage. These combine to let us handle
-ridiculously large amounts of data by first, efficiently handling updates to
-extremely large files; second, efficiently storing new versions of the
-repository; and three, holding our data in a failure-resistant manner. Attaca
-is currently built on the Ceph RADOS (Reliable Autonomous Distributed Object
-Store) but other backends are planned, as the only required feature of any
-backing store is the ability to act as a distributed hash table for fairly
-large values (about 3MB per object). It does make a few modifications to the
-Git data structure; a detailed explanation of hashsplitting and Attaca's take
-on the Git data structure can be found [here]({{ site.baseurl }}{% post_url
+data structure, and distributed storage. These combine to let us to efficiently
+handle updates to extremely large files, efficiently store new versions of the
+repository and hold the data in a failure-resistant manner. Attaca is currently
+built on the Ceph RADOS (Reliable Autonomous Distributed Object Store) but
+other backends are planned, as the only required feature of any backing store
+is the ability to act as a distributed hash table for fairly large values
+(about 3MB per object). It does make a few modifications to the Git data
+structure; a detailed explanation of hashsplitting and Attaca's take on the Git
+data structure can be found [here]({{ site.baseurl }}{% post_url
 2017-8-28-Hashsplitting %}), in one of my earlier blog posts.
 
 ## Milestones
