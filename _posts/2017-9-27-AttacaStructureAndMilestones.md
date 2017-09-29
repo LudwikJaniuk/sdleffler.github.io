@@ -8,10 +8,12 @@ In this post I want to talk a little about my current project,
 [Attaca](https://github.com/sdleffler/attaca).
 
 Attaca is a distributed version control system designed for users working with
-absurdly large quantities of data. For example, scientists: a brain scan will
-routinely result in a 50GB file. Whatever your use case, Attaca is designed to
-efficiently handle repositories of up to a petabyte of data in a distributed
-storage cluster.
+absurdly large quantities of data. For example, the size of Wikipedia's
+`pages-articles-multistream` data dump, containing the current revisions of all
+Wikipedia pages without any "user" or "talk" pages, is roughly 58 GB on disk;
+the "all revisions, all pages" dump comes to multiple terabytes. Whatever your
+use case, Attaca is designed to efficiently handle repositories of up to a
+petabyte of data in a distributed storage cluster.
 
 ## How?
 
