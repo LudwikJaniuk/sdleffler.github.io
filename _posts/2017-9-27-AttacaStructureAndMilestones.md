@@ -34,7 +34,7 @@ data structure can be found [here]({{ site.baseurl }}{% post_url
 When I started working on this project, three milestones were set, estimated at about a month's worth of time for each:
 
 1. Create a client capable of hashsplitting files and storing the resulting chunks in the remote object store.
-2. Implement subtrees, "large" blobs, and and commits.
+2. Implement subtrees, "large" blobs, and commits.
 3. Implement the ref store interface, and add local index/commit/push functionality.
 
 Three months in, I can comfortably say I've completed my first milestone!
