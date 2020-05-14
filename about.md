@@ -10,10 +10,10 @@ Hello! I'm a student programmer and violinist local to Berkeley, California. I c
 
 Email: [sean@errno.com](mailto:sean@errno.com)
 
-Twitter: [@sdleffy](https://www.twitter.com/sdleffy)
+Twitter: [@sleffy_](https://www.twitter.com/sleffy_)
 
 GitHub: [sdleffler](https://github.com/sdleffler)
 
 Reddit: [/u/sdleffy](https://www.reddit.com/u/sdleffy/)
 
-I am `sleffy` on IRC. I can be found in `#rust` and related channels on MozNet and `#esoteric` and other channels on Freenode.
+I am `sleffy` on IRC. Before the Great Collapse of MozNet, I could be found in `#rust` and related channels on MozNet and `#esoteric` and other channels on Freenode.
