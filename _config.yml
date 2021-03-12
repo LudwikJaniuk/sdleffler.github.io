@@ -6,7 +6,7 @@
 name: Recursive Descent into Madness
 
 # Short bio or description (displayed in the header)
-description: A countable set of sanities and insanities, by Sean Leffler.
+description: A countable set of sanities and insanities, by Shea Leffler.
 
 # # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: https://avatars0.githubusercontent.com/u/5241142?v=3&s=460
@@ -18,12 +18,11 @@ avatar: https://avatars0.githubusercontent.com/u/5241142?v=3&s=460
 # Includes an icon in the footer for each username you enter
 footer-links:
   dribbble:
-  email: sean@errno.com
+  email: shea@errno.com
   facebook:
   flickr:
   github: sdleffler
   instagram:
-  linkedin: sean-leffler-71561213a
   pinterest:
   rss: givemeaworkingrssicon # just type anything here for a working RSS icon
   twitter: sdleffy

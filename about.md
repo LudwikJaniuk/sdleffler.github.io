@@ -8,7 +8,7 @@ Hello! I'm a student programmer and violinist local to Berkeley, California. I c
 
 ### Contact me
 
-Email: [sean@errno.com](mailto:sean@errno.com)
+Email: [shea@errno.com](mailto:shea@errno.com)
 
 Twitter: [@sleffy_](https://www.twitter.com/sleffy_)
 
