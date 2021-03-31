@@ -4,6 +4,8 @@ title: Compiling Session Types With Procedural Macros in Rust
 published: false
 ---
 
+{:toc}
+
 I've recently been doing some work for a company called Bolt Labs, mainly on a very interesting
 library called Dialectic. Dialectic is a Rust crate which provides a form of "session typing", which
 in this context is a way to write out a specification of a protocol for communication between two
