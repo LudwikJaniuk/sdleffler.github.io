@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Strengths and Limitations of Liquid Haskell, and the Puzzle of `the`
-published: false
+published: true
 ---
 
 This summer, I was lucky enough to be accepted to work with Liquid Haskell as
