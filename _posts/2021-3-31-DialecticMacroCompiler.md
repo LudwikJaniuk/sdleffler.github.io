@@ -718,4 +718,4 @@ consider it to be pretty thoroughly commented, if we do say so ourselves.
 If you have questions, you can contact me on Twitter at [@sleffy_](https://twitter.com/sleffy_),
 through email at `shea@errno.com`, or on Discord as SLEFFY#6314. Happy to talk about it anytime!
 
-- Shea
+\- Shea
