@@ -282,6 +282,26 @@ little custom AST for your macro language. So you can keep it real simple when d
 representation. No need for an arena or string interning or such to keep it efficient; things are
 pretty much guaranteed to be small enough that you can be elegant rather than just efficient.
 
+# Keeping your proc macro implementation in another crate is a good idea
+
+As previously mentioned, we keep the `dialectic-compiler` crate separate from the `dialectic-macro`
+crate. The `Session!` macro is not the only macro which lives in the `dialectic-macro` proc macro
+crate; there's the `Transmitter` and `Receiver` macros, as well as some internally used macros which
+generate trait implementations and such across large swathes of const generic type parameters to
+cover for some of the limitations of `min_const_generics` as it just landed in stable. The main
+benefit of a separate crate, though, is that we can make the entirety of the compiler API public,
+for what it's worth, and test the hell out of it. With a proc macro crate, integration tests will
+see the proc macro itself, as a macro, but you won't be able to do things like hand it a syntax tree
+and check the output syntax tree, or test just the parser to ensure that once you print and then
+parse something, the act of printing and then parsing it again is an identity, or similar. The
+`dialectic-compiler` crate contains a number of tests like that; a handful as unit tests, mostly for
+sanity-checking things like constructing a CFG, and then a number of integration tests, checking for
+cases where we know we've had wrong outputs in the past and also a quickcheck-driven randomized
+fuzz-ish test for the parser. One of the best sets of tests we have, in my opinion, are the failure
+tests, which expect a certain set of errors to be emitted from the macro compiler. We don't
+currently check for *where* those are emitted (since we can't for various reasons) but we can at
+least check that they're there!
+
 # CFG representations can look a little intimidating to work with but are actually really easy
 
 If you've ever looked into writing a compiler before, you've probably come across the idea of a
