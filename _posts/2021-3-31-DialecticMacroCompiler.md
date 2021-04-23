@@ -738,6 +738,6 @@ docs.rs](https://docs.rs/dialectic-compiler) if you want to know about specific 
 consider it to be pretty thoroughly commented, if we do say so ourselves.
 
 If you have questions, you can contact me on Twitter at [@DecibelOverkill](https://twitter.com/DecibelOverkill),
-through email at `shea@errno.com`, or on Discord as DecibelOverkill#5150. Happy to talk about it anytime!
+through email at `shea@errno.com`, or on Discord as `DecibelOverkill#1972`. Happy to talk about it anytime!
 
 \- Shea
