@@ -10,7 +10,7 @@ Hello! I'm a student programmer and violinist local to Berkeley, California. I c
 
 Email: [shea@errno.com](mailto:shea@errno.com)
 
-Twitter: [@sleffy_](https://www.twitter.com/sleffy_)
+Twitter: [@DecibelOverkill](https://www.twitter.com/DecibelOverkill)
 
 GitHub: [sdleffler](https://github.com/sdleffler)
 
